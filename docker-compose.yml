@@ -19,9 +19,7 @@ services:
       - airbnb-network
 
   airbnb-app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: jessemukesh/airbnb-app:v1
 
     container_name: airbnb-container
 
