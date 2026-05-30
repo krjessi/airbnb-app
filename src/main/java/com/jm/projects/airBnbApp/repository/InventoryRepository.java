@@ -145,7 +145,7 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long> {
                          @Param("surgeFactor")BigDecimal surgeFactor);
 
     @Query("""
-       SELECT new com.codingshuttle.projects.airBnbApp.dto.RoomPriceDto(
+       SELECT new com.jm.projects.airBnbApp.dto.RoomPriceDto(
             i.room,
             CASE
                 WHEN COUNT(i) = :dateCount THEN AVG(i.price)
