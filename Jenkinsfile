@@ -23,7 +23,7 @@ pipeline {
 
         stage('Docker Images') {
             steps {
-                sh 'docker images | head'
+                sh 'docker images | grep airbnb'
             }
         }
     }
