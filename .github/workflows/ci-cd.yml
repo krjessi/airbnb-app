@@ -6,11 +6,11 @@ on:
       - phase-14-complete
 
 jobs:
-  build-and-push:
-
+  build-push-deploy:
     runs-on: ubuntu-latest
 
     steps:
+
       - name: Checkout Source Code
         uses: actions/checkout@v4
 
@@ -34,3 +34,15 @@ jobs:
 
       - name: Push Docker Image
         run: docker push jessemukesh/airbnb-app:latest
+
+      - name: Create SSH Key
+        run: |
+          echo "${{ secrets.ANSIBLE_SSH_KEY }}" > ansible-key.pem
+          chmod 600 ansible-key.pem
+
+      - name: Deploy via Ansible
+        run: |
+          ssh -o StrictHostKeyChecking=no \
+          -i ansible-key.pem \
+          ubuntu@54.221.80.125 \
+          "cd ~/ansible-lab && ansible-playbook -i inventory deploy-airbnb-playbook.yml"
