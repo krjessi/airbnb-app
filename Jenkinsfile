@@ -44,5 +44,21 @@ pipeline {
                 sh 'docker images | grep airbnb'
             }
         }
+	stage('Deploy Application') {
+    	    steps {
+        	sh '''
+                docker pull jessemukesh/airbnb-app:latest
+
+                docker stop airbnb-app || true
+                docker rm airbnb-app || true
+
+                docker run -d \
+                  --name airbnb-app \
+                  --network airbnb-network \
+                  -p 8081:8080 \
+                  jessemukesh/airbnb-app:latest
+                '''
+ 	   }
+	}
     }
 }
