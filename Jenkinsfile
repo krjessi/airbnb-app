@@ -1,24 +1,29 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE_NAME = "jessemukesh/airbnb-app"
+        IMAGE_TAG = "${BUILD_NUMBER}"
+    }
+
     stages {
 
-        stage('Checkout') {
-            steps {
-                echo 'Checkout Completed'
-            }
-        }
-
-        stage('Build Application') {
+        stage('Build JAR') {
             steps {
                 sh 'chmod +x mvnw'
                 sh './mvnw clean package -DskipTests'
             }
         }
 
-        stage('Verify Artifact') {
+        stage('Build Docker Image') {
             steps {
-                sh 'ls -lh target/'
+                sh 'docker build -t $IMAGE_NAME:$IMAGE_TAG .'
+            }
+        }
+
+        stage('Docker Images') {
+            steps {
+                sh 'docker images | head'
             }
         }
     }
