@@ -9,12 +9,17 @@ pipeline {
             }
         }
 
-        stage('Verify Project') {
+        stage('Build Application') {
             steps {
-                sh 'pwd'
-                sh 'ls -la'
+                sh 'chmod +x mvnw'
+                sh './mvnw clean package -DskipTests'
             }
         }
 
+        stage('Verify Artifact') {
+            steps {
+                sh 'ls -lh target/'
+            }
+        }
     }
 }
